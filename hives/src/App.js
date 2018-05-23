@@ -14,11 +14,10 @@ export default class App extends Component {
     return (
       <Router>
         <div>
-          { fakeAuth.isAuthenticated ? <Menu /> : "" }
-          <Route exact path="/" to='/dashboard'/>
-          <Route exact path="/login" component={Login}/>
-          <PrivateRoute path="/dashboard" component={Dashboard}/>
+          <PrivateRoute path="/" component={Dashboard}/>
           <PrivateRoute path="/chat" component={Chat} />
+          <Route exact path="/login" component={Login}/>
+          <Route path="/dashboard" to='/'/>
         </div>
       </Router>
     );
@@ -62,7 +61,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
         <Redirect
           to={{
             pathname: "/login",
-            state: { from: props.location }
+            state: { from: "/" }
           }}
         />
       )
@@ -84,7 +83,7 @@ class Login extends React.Component {
 
   render() {
 
-    const { from } = this.props.location.state || { from: { pathname: "/login" } };
+    const { from } = this.props.location.state || { from: { pathname: "/" } };
     const { redirectToReferrer } = this.state;
 
     if (redirectToReferrer) {

@@ -1,45 +1,61 @@
 import React from "react";
-import React, { Component } from 'react';
-import { Menu } from 'semantic-ui-react';
-import {
-  Link,
-} from "react-router-dom";
+import { Menu, Input } from 'semantic-ui-react';
+import { Link } from "react-router-dom";
 
 import { AuthButton } from "../App";
 
+const itemStyle = {
+  fontWeight: 'bold',
+}
+const selectedItemStyle = {
+  fontWeight: 'bold',
+}
+
 export default class MainMenu extends React.Component {
-  state = {}
+  state = {
+    activeItem: 'dashboard',
+  }
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name})
 
   render() {
-    const { activeItem } = this.state
+    const { activeItem } = this.state;
 
     return (
-      <Menu>
+      <Menu inverted size='large' fluid fixed attached='top' style={{ borderRadius: '0px', margin: '0px' }}>
         <Menu.Item
-          name='LogOut'
-          active={activeItem === 'LogOut'}
+          name='dashboard'
+          color="yellow"
+          style={activeItem === 'dashboard' ? selectedItemStyle : itemStyle }
+          active={activeItem === 'dashboard'}
           onClick={this.handleItemClick}
-        ><AuthButton />
+        >
+          <Link to="/">Dashboard</Link>
         </Menu.Item>
 
         <Menu.Item
-          name='Dashboard'
-          active={activeItem === 'Dashboard'}
+          name='chat'
+          color="yellow"
+          style={activeItem === 'chat' ? selectedItemStyle : itemStyle }
+          active={activeItem === 'chat'}
           onClick={this.handleItemClick}
-        ><Link to="/dashboard">Dashboard</Link>
-
+        ><
+          Link to="/chat">Chat</Link>
         </Menu.Item>
 
-        <Menu.Item
-          name='Chat'
-          active={activeItem === 'Chat'}
-          onClick={this.handleItemClick}
-        ><Link to="/chat">Chat</Link>
-        </Menu.Item>
+        <Menu.Menu position='right'>
+          <Menu.Item>
+            <Input className='icon' icon='search' placeholder='Search...' />
+          </Menu.Item>
+          <Menu.Item
+            name='logout'
+            active={activeItem === 'logout'}
+            onClick={this.handleItemClick}
+          >
+            <AuthButton />
+          </Menu.Item>
+        </Menu.Menu>
       </Menu>
     )
   }
 }
-

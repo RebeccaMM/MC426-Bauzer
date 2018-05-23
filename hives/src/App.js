@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from "react-router-dom";
+import { BrowserRouter as Router, Route, Redirect, withRouter } from "react-router-dom";
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
 import logo from './assets/logo.png';
 
 import './App.css';
 
-
+import Menu from './containers/Menu';
 import Dashboard from './containers/Dashboard';
 import Chat from './containers/Chat';
 
@@ -14,17 +14,10 @@ export default class App extends Component {
     return (
       <Router>
         <div>
-          <ul>
-            <li><Link to="/dashboard">Dashboard</Link></li>
-            <li><Link to="/chat">Chat</Link></li>
-            <li>{ fakeAuth.isAuthenticated ? <Link to="/login"><button>Login</button></Link> : <AuthButton /> }</li>
-          </ul>
-
-          <hr/>
-
-          <Route path="/login" component={Login}/>
-          <Route path="/" to='/dashboard'/>
-          <PrivateRoute exact path="/dashboard" component={Dashboard}/>
+          { fakeAuth.isAuthenticated ? <Menu /> : "" }
+          <Route exact path="/" to='/dashboard'/>
+          <Route exact path="/login" component={Login}/>
+          <PrivateRoute path="/dashboard" component={Dashboard}/>
           <PrivateRoute path="/chat" component={Chat} />
         </div>
       </Router>
@@ -32,7 +25,7 @@ export default class App extends Component {
   }
 }
 
-const fakeAuth = {
+export const fakeAuth = {
   isAuthenticated: false,
   authenticate(cb) {
     this.isAuthenticated = true;
@@ -44,7 +37,7 @@ const fakeAuth = {
   }
 };
 
-const AuthButton = withRouter(
+export const AuthButton = withRouter(
   ({ history }) =>
     fakeAuth.isAuthenticated ? (
         <button
@@ -91,7 +84,7 @@ class Login extends React.Component {
 
   render() {
 
-    const { from } = this.props.location.state || { from: { pathname: "/" } };
+    const { from } = this.props.location.state || { from: { pathname: "/login" } };
     const { redirectToReferrer } = this.state;
 
     if (redirectToReferrer) {

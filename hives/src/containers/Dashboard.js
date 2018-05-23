@@ -1,16 +1,11 @@
 import React from "react";
-/*import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  Redirect,
-  withRouter
-} from "react-router-dom";*/
+import Menu from '../containers/Menu';
 
 export default class Dashboard extends React.Component {
   render() {
     return (
       <div>
+        <Menu />
         <h3>Dashboard</h3>
       </div>
     )

@@ -1,5 +1,5 @@
 import React from "react";
-import { Menu, Input } from 'semantic-ui-react';
+import { Menu, Input, Icon } from 'semantic-ui-react';
 import { Link } from "react-router-dom";
 
 import { AuthButton } from "../App";
@@ -45,7 +45,7 @@ export default class MainMenu extends React.Component {
 
         <Menu.Menu position='right'>
           <Menu.Item>
-            <Input className='icon' icon='search' placeholder='Search...' />
+            <Input className='search' icon={<Icon name='search' inverted circular link />} placeholder='Search...' />
           </Menu.Item>
           <Menu.Item
             name='logout'

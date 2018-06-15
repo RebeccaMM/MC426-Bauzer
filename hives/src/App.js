@@ -5,7 +5,6 @@ import logo from './assets/logo.png';
 
 import './App.css';
 
-import Menu from './containers/Menu';
 import Dashboard from './containers/Dashboard';
 import Chat from './containers/Chat';
 
@@ -39,13 +38,13 @@ export const fakeAuth = {
 export const AuthButton = withRouter(
   ({ history }) =>
     fakeAuth.isAuthenticated ? (
-        <button
+        <Button color="yellow"
           onClick={() => {
             fakeAuth.signout(() => history.push("/login"));
           }}
         >
           Sign out
-        </button>
+        </Button>
     ) : (
       <p>You are not logged in.</p>
     )

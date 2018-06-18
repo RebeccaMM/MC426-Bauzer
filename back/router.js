@@ -1,4 +1,4 @@
-var pessoa = require('./usuario')
+var usuario = require('./usuario')
 
 
 // Define os endpoints, chamando as funções declaradas nos controllers

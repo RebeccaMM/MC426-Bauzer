@@ -16,9 +16,6 @@ var getPorEmpresa = function (idEmpresa) {
 }
 
 var addVaga = function (vaga) {
-  titulo varchar(20) not null,
-  descricao varchar(255),
-  idEmpresa int,
   return db.query(format(insertVagaQuery, vaga.titulo, vaga.decricao, vaga.empresa));
 }
 

@@ -7,6 +7,7 @@ import './App.css';
 
 import Dashboard from './containers/Dashboard';
 import Chat from './containers/Chat';
+import Opportunity from './containers/Opportunity';
 
 export default class App extends Component {
   render() {
@@ -16,6 +17,7 @@ export default class App extends Component {
           <PrivateRoute path="/" component={Dashboard}/>
           <PrivateRoute path="/chat" component={Chat} />
           <Route exact path="/login" component={Login}/>
+          <Route path="/opportunity" component={Opportunity}/>
           <Route path="/dashboard" to='/'/>
         </div>
       </Router>

@@ -43,6 +43,16 @@ export default class MainMenu extends React.Component {
           Link to="/chat">Chat</Link>
         </Menu.Item>
 
+        <Menu.Item
+          name='opportunity'
+          color="yellow"
+          style={activeItem === 'opportunity' ? selectedItemStyle : itemStyle }
+          active={activeItem === 'opportunity'}
+          onClick={this.handleItemClick}
+        ><
+          Link to="/opportunity">Opportunities</Link>
+        </Menu.Item>
+
         <Menu.Menu position='right'>
           <Menu.Item>
             <Input className='search' icon={<Icon name='search' inverted circular link />} placeholder='Search...' />

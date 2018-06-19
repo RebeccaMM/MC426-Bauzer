@@ -6,9 +6,11 @@ import { AuthButton } from "../App";
 
 const itemStyle = {
   fontWeight: 'bold',
+  width: "10em",
 }
 const selectedItemStyle = {
   fontWeight: 'bold',
+  width: "10em",
 }
 
 export default class MainMenu extends React.Component {
@@ -26,6 +28,7 @@ export default class MainMenu extends React.Component {
         <Menu.Item
           name='dashboard'
           color="yellow"
+          width={3}
           style={activeItem === 'dashboard' ? selectedItemStyle : itemStyle }
           active={activeItem === 'dashboard'}
           onClick={this.handleItemClick}
@@ -39,8 +42,8 @@ export default class MainMenu extends React.Component {
           style={activeItem === 'chat' ? selectedItemStyle : itemStyle }
           active={activeItem === 'chat'}
           onClick={this.handleItemClick}
-        ><
-          Link to="/chat">Chat</Link>
+        >
+          <Link to="/chat">Chat</Link>
         </Menu.Item>
 
         <Menu.Item
@@ -49,8 +52,8 @@ export default class MainMenu extends React.Component {
           style={activeItem === 'opportunity' ? selectedItemStyle : itemStyle }
           active={activeItem === 'opportunity'}
           onClick={this.handleItemClick}
-        ><
-          Link to="/opportunity">Opportunities</Link>
+        >
+          <Link to="/opportunity">Opportunities</Link>
         </Menu.Item>
 
         <Menu.Menu position='right'>

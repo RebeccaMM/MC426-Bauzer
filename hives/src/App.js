@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Redirect, withRouter } from "react-router-dom";
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
+import axios from "axios";
 import logo from './assets/logo.png';
 
 import './App.css';
@@ -73,19 +74,38 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
 class Login extends React.Component {
 
   state = {
-    redirectToReferrer: false
+    redirectToReferrer: false,
+    username: '',
+    password: '',
+    errorMessage: false,
+  };
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    axios.post('http://localhost:8081/usuario/login', {
+      username: this.state.username,
+      senha: this.state.password,
+    })
+    .then((response) => {
+      this.login();
+    })
+    .catch((error) => {
+      console.log(error);
+      this.setState({ errorMessage: true });
+    });
   };
 
   login = () => {
+    this.setState({ errorMessage: false });
     fakeAuth.authenticate(() => {
       this.setState({ redirectToReferrer: true });
     });
-  };
+  }
 
   render() {
 
     const { from } = this.props.location.state || { from: { pathname: "/" } };
-    const { redirectToReferrer } = this.state;
+    const { redirectToReferrer, username, password, errorMessage } = this.state;
 
     if (redirectToReferrer) {
       return <Redirect to={from} />;
@@ -117,11 +137,19 @@ class Login extends React.Component {
             </Header>
             <Form size='large'>
               <Segment stacked>
+                <Message
+                  hidden={ errorMessage === false }
+                  negative
+                  header='Error!'
+                  content='Incorrect User or Password.'
+                />
                 <Form.Input
                   fluid
                   icon='user'
                   iconPosition='left'
                   placeholder='E-mail address'
+                  value={ username }
+                  onChange={(e) => this.setState({ username: e.target.value })}
                 />
                 <Form.Input
                   fluid
@@ -129,9 +157,11 @@ class Login extends React.Component {
                   iconPosition='left'
                   placeholder='Password'
                   type='password'
+                  value={ password }
+                  onChange={(e) => this.setState({ password: e.target.value })}
                 />
 
-                <Button color='yellow' fluid size='large' onClick={this.login}>Login</Button>
+              <Button color='yellow' fluid size='large' onClick={this.handleSubmit}>Login</Button>
               </Segment>
             </Form>
             <Message>

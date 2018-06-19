@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
-var router = require('./router')
+var bodyParser = require('body-parser');
+var router = require('./router');
 
 // Add headers
 app.use(function (req, res, next) {
@@ -17,6 +18,9 @@ app.use(function (req, res, next) {
     // Pass to next layer of middleware
     next();
 });
+
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 
 router.defineRoutes(app);
 

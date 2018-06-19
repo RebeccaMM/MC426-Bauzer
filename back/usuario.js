@@ -14,15 +14,15 @@ var get = function (req, res) {
 };
 
 var checkLogin = function (req, res) {
-  var userName = req.body.userName;
+  var username = req.body.username;
   var senha = req.body.senha;
-  var promise = usuarioDAO.login(userName, senha);
+  var promise = usuarioDAO.login(username, senha);
 
   promise.then(function(result) {
     if (typeof result === null || typeof result === 'undefined' || result.length === 0 || result.length > 1) {
-      res.json(false);
+      res.status(403).send('Usuario ou senha invalidos');
     } else {
-      res.json(true);
+      res.status(200).send('top');
     }
   }).catch(function(error) {
     res.status(500).send('internal server error');

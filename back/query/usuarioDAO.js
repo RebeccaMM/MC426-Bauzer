@@ -1,4 +1,5 @@
-var db = require('../db')
+var db = require('../db');
+const format = require('string-format');
 
 // declara os Selects em variáveis
 var findAllQuery = 'SELECT * FROM Usuario';
@@ -10,7 +11,7 @@ var findAll = function() {
 }
 
 var login = function (login, senha) {
-  return db.query(checkLoginQuery);
+  return db.query(format(checkLoginQuery, login, senha));
 }
 
 // Expõe o método para o módulo (analogia: tornar o método public)

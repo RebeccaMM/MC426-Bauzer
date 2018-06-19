@@ -6,6 +6,7 @@ import { Container, Header, Grid } from 'semantic-ui-react';
 import '../Pages.css';
 
 import ContactList from '../containers/ContactList';
+import ChatWindow from '../containers/ChatWindow';
 
 export default class Chat extends React.Component {
   render() {
@@ -15,12 +16,10 @@ export default class Chat extends React.Component {
           <Grid.Column width={3}>
             <ContactList contacts={contacts}/>
           </Grid.Column>
-          <Grid.Column width={13} >
-              <Header as='h1'>Chat</Header>
+          <Grid.Column width={13} style={{ paddingLeft: '1%', paddingRight: '2.5%' }}>
+            <ChatWindow />
           </Grid.Column>
         </Grid>
-
-
       </Container>
     )
   }

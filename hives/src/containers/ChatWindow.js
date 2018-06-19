@@ -4,24 +4,32 @@ import faker from 'faker'
 import { Container, Header, Grid, Input, Form, TextArea, Button} from 'semantic-ui-react';
 import '../Pages.css';
 
-var msg = '';
-var inputValue;
-
 export default class Chat extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      history: ''
+      history: '',
+      inputMsg: ''
     };
 
     this.sendMsg = this.sendMsg.bind(this);
+    this.handleInput = this.handleInput.bind(this);
   }
 
   sendMsg(i) {
-    var h = this.state.history + inputValue + '\r\n';
+    var h = this.state.history + this.state.inputMsg + '\r\n';
     this.setState({
-      history: h
+      history: h,
+      inputMsg: ''
     })
+    this.inputMsgBox.value='';
+  }
+
+  handleInput(e){
+    this.setState({
+      history: this.state.history,
+      inputMsg: e.target.value
+    });
   }
 
   render() {
@@ -29,7 +37,7 @@ export default class Chat extends React.Component {
       <Container fluid style={{backgroundColor: '#ddd', height: '100%' }}>
         <Header as="h1">Chat</Header>
         <Form style={{ height: '80%', padding: '0' }}>
-          <TextArea  readonly style={{ height: '100%' }} value={this.state.history} />
+          <TextArea  readOnly style={{ height: '100%', resize: 'none' }} value={this.state.history} />
         </Form>
         <Input
           action={
@@ -40,7 +48,8 @@ export default class Chat extends React.Component {
               content='Enviar'
               onClick={ this.sendMsg }
             />}
-          onChange={ e => inputValue = e.target.value }
+          value={ this.state.inputMsg }
+          onChange={ this.handleInput }
           style={{ width: '100%' }} placeholder='Mensagem...'/>
       </Container>
     )

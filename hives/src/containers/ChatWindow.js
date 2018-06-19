@@ -13,23 +13,28 @@ export default class Chat extends React.Component {
     };
 
     this.sendMsg = this.sendMsg.bind(this);
-    this.handleInput = this.handleInput.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
-  sendMsg(i) {
+  sendMsg() {
     var h = this.state.history + this.state.inputMsg + '\r\n';
     this.setState({
       history: h,
       inputMsg: ''
     })
-    this.inputMsgBox.value='';
   }
 
-  handleInput(e){
+  handleChange(e){
     this.setState({
       history: this.state.history,
       inputMsg: e.target.value
     });
+  }
+
+  handleKeyPress(k){
+    if(k.key == 'Enter')
+      this.sendMsg();
   }
 
   render() {
@@ -49,7 +54,8 @@ export default class Chat extends React.Component {
               onClick={ this.sendMsg }
             />}
           value={ this.state.inputMsg }
-          onChange={ this.handleInput }
+          onChange={ this.handleChange }
+          onKeyPress={ this.handleKeyPress }
           style={{ width: '100%' }} placeholder='Mensagem...'/>
       </Container>
     )

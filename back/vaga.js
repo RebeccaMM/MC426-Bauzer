@@ -21,8 +21,24 @@ var getPorEmpresa = function (req, res) {
   })
 };
 
+var post = function (req, res) {
+  var tituloVaga = req.body.vaga;
+  var promise = vagaDAO.addVaga(vaga);
+
+  promise.then(function(result) {
+    if (typeof result === null || typeof result === 'undefined') {
+      res.status(403).send('vaga não cadastrada');
+    } else {
+      res.status(200).send('top');
+    }
+  }).catch(function(error) {
+    res.status(403).send('forbidden');
+  });
+};
+
 // torna public o método get
 module.exports = {
   get: get,
-  getPorEmpresa: getPorEmpresa
+  getPorEmpresa: getPorEmpresa,
+  post: post,
 };

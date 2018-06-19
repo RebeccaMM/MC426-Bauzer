@@ -7,6 +7,7 @@ var defineRoutes = function (app) {
 	app.post('/usuario/login', usuario.checkLogin);
 	app.get('/vaga', vaga.get);
 	app.get('/vaga/empresa/:idEmpresa', vaga.getPorEmpresa);
+	app.post('/vaga/addVaga', vaga.post);
 }
 
 module.exports = {

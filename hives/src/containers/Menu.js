@@ -25,37 +25,40 @@ export default class MainMenu extends React.Component {
 
     return (
       <Menu inverted size='large' fluid fixed attached='top' style={{ borderRadius: '0px', margin: '0px' }}>
-        <Menu.Item
-          name='dashboard'
-          color="yellow"
-          width={3}
-          style={activeItem === 'dashboard' ? selectedItemStyle : itemStyle }
-          active={activeItem === 'dashboard'}
-          onClick={this.handleItemClick}
-        >
-          <Link to="/">Dashboard</Link>
-        </Menu.Item>
-
-        <Menu.Item
-          name='chat'
-          color="yellow"
-          style={activeItem === 'chat' ? selectedItemStyle : itemStyle }
-          active={activeItem === 'chat'}
-          onClick={this.handleItemClick}
-        >
-          <Link to="/chat">Chat</Link>
-        </Menu.Item>
-
-        <Menu.Item
-          name='opportunity'
-          color="yellow"
-          style={activeItem === 'opportunity' ? selectedItemStyle : itemStyle }
-          active={activeItem === 'opportunity'}
-          onClick={this.handleItemClick}
-        >
-          <Link to="/opportunity">Opportunities</Link>
-        </Menu.Item>
-
+        <Link to="/">
+          <Menu.Item
+            name='dashboard'
+            color="yellow"
+            width={3}
+            style={activeItem === 'dashboard' ? selectedItemStyle : itemStyle }
+            active={activeItem === 'dashboard'}
+            onClick={this.handleItemClick}
+          >
+            Dashboard
+          </Menu.Item>
+        </Link>
+        <Link to="/chat">
+          <Menu.Item
+            name='chat'
+            color="yellow"
+            style={activeItem === 'chat' ? selectedItemStyle : itemStyle }
+            active={activeItem === 'chat'}
+            onClick={this.handleItemClick}
+          >
+            Chat
+          </Menu.Item>
+        </Link>
+        <Link to="/opportunity">
+          <Menu.Item
+            name='opportunity'
+            color="yellow"
+            style={activeItem === 'opportunity' ? selectedItemStyle : itemStyle }
+            active={activeItem === 'opportunity'}
+            onClick={this.handleItemClick}
+          >
+            Opportunities
+          </Menu.Item>
+        </Link>
         <Menu.Menu position='right'>
           <Menu.Item>
             <Input className='search' icon={<Icon name='search' inverted circular link />} placeholder='Search...' />

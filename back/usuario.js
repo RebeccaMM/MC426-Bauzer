@@ -13,6 +13,17 @@ var get = function (req, res) {
   })
 };
 
+var getUserName = function (req, res) {
+  var id = req.body.id;
+  var promise = usuarioDAO.getUserName(id);
+
+  promise.then(function(result) {
+    res.json(result);
+  }).catch(function(error) {
+    res.status(403).send('forbidden');
+  })
+};
+
 var checkLogin = function (req, res) {
   var username = req.body.username;
   var senha = req.body.senha;
@@ -32,5 +43,6 @@ var checkLogin = function (req, res) {
 // torna public o método get
 module.exports = {
   get: get,
-  checkLogin: checkLogin
+  checkLogin: checkLogin,
+  getUserName: getUserName
 };

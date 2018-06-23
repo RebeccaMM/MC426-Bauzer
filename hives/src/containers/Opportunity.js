@@ -1,11 +1,12 @@
 import React from "react";
-import { Container, Header, Grid, Card, Button, Divider } from 'semantic-ui-react';
+import { Container, Header, Grid, Card, Button, Divider, Popup, Input } from 'semantic-ui-react';
 import axios from 'axios';
 
 export default class Opportunity extends React.Component {
 
   state = {
     jobs : [],
+    apply : -1,
   }
 
   componentWillMount() {
@@ -16,6 +17,7 @@ export default class Opportunity extends React.Component {
           axios.post('http://localhost:8081/usuario',{ id: j.idEmpresa })
             .then((response) => {
               j.empresa = response.data[0].nome;
+              this.setState({ jobs : this.state.jobs });
             })
             .catch((error) => {
               console.log(error);
@@ -29,21 +31,30 @@ export default class Opportunity extends React.Component {
 
 
   render() {
-
-    const vagas = this.state.jobs.map((j) => {
-      console.log(j);
+    const { jobs, apply } = this.state;
+    const vagas = jobs.map((j) => {
       return (
         <Card
-          key={j.titulo + j.empresa}
+          key={jobs.indexOf(j)}
           header={j.titulo}
           meta={j.empresa}
           description={j.descricao}
           extra={
-            <a>
-              <Button color='green' fluid>
-                  Apply
-              </Button>
-            </a>
+            <Popup
+              trigger={<Button color='green'>Apply</Button>}
+              content={
+                <div>
+                  <Input size='tiny' icon='user' placeholder='Name' style={{margin : "0.5em"}}/>
+                  <Input size='tiny' icon='at' placeholder='Email'  style={{margin : "0.5em"}}/>
+                  <Input size='tiny' icon='phone' placeholder='Phone'  style={{margin : "0.5em"}}/>
+                  <Button fluid style={{margin : "0 0.5em"}}>Confirm Apply</Button>
+                </div>
+              }
+              size='large'
+              on='click'
+              style={{backgroundColor:"green"}}
+            />
+
           }
         />
       )

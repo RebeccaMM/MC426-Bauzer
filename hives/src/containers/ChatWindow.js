@@ -8,7 +8,7 @@ export default class Chat extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      history: '',
+      msgHistory: '',
       inputMsg: ''
     };
 
@@ -18,16 +18,19 @@ export default class Chat extends React.Component {
   }
 
   sendMsg() {
-    var h = this.state.history + this.state.inputMsg + '\r\n';
+    if(this.state.inputMsg == '')
+      return;
+
+    var h = this.state.msgHistory + this.state.inputMsg + '\r\n';
     this.setState({
-      history: h,
+      msgHistory: h,
       inputMsg: ''
     })
   }
 
   handleChange(e){
     this.setState({
-      history: this.state.history,
+      msgHistory: this.state.msgHistory,
       inputMsg: e.target.value
     });
   }
@@ -42,7 +45,12 @@ export default class Chat extends React.Component {
       <Container fluid style={{backgroundColor: '#ddd', height: '100%' }}>
         <Header as="h1">Chat</Header>
         <Form style={{ height: '80%', padding: '0' }}>
-          <TextArea  readOnly style={{ height: '100%', resize: 'none' }} value={this.state.history} />
+          <TextArea
+            disabled
+            readOnly
+            style={{ height: '100%', resize: 'none' }}
+            value={this.state.msgHistory}
+          />
         </Form>
         <Input
           action={

@@ -82,17 +82,17 @@ class Login extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('http://localhost:8081/usuario/login', {
-      username: this.state.username,
-      senha: this.state.password,
-    })
-    .then((response) => {
+    // axios.post('http://localhost:8081/usuario/login', {
+    //   username: this.state.username,
+    //   senha: this.state.password,
+    // })
+    // .then((response) => {
       this.login();
-    })
-    .catch((error) => {
-      console.log(error);
-      this.setState({ errorMessage: true });
-    });
+    // })
+    // .catch((error) => {
+    //   console.log(error);
+    //   this.setState({ errorMessage: true });
+    // });
   };
 
   login = () => {

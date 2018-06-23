@@ -43,7 +43,7 @@ export default class Chat extends React.Component {
   render() {
     return (
       <Container fluid style={{backgroundColor: '#ddd', height: '100%' }}>
-        <Header as="h1">Chat</Header>
+        <Header as="h1">Chat {this.props.idGrupo}</Header>
         <Form style={{ height: '80%', padding: '0' }}>
           <TextArea
             disabled

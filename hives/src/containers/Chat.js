@@ -12,7 +12,10 @@ import ChatWindow from '../containers/ChatWindow';
 export default class Chat extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { contacts : [{}] };
+    this.state = {
+      contacts : [],
+      conversaSelecionada: null
+    };
   }
 
   componentDidMount(){
@@ -26,15 +29,23 @@ export default class Chat extends React.Component {
     });
   }
 
+  selContato = (idConversa) => {
+    this.setState({
+      contacts: this.state.contacts,
+      conversaSelecionada: idConversa
+    });
+  };
+
+
   render() {
     return (
       <Container fluid style={{ margin: '1em', backgroundColor: '#dddddd' }}>
         <Grid style={{ height: '100vh' }}>
           <Grid.Column width={3} style={{ height: '100%' }}>
-            <ContactList contacts={this.state.contacts}/>
+            <ContactList contacts={this.state.contacts} selContato={this.selContato}/>
           </Grid.Column>
           <Grid.Column width={13} style={{ paddingLeft: '1%', paddingRight: '2.5%' }}>
-            <ChatWindow />
+            <ChatWindow idGrupo={this.state.conversaSelecionada}/>
           </Grid.Column>
         </Grid>
       </Container>

@@ -1,5 +1,6 @@
 var mensagemDAO = require('../query/mensagemDAO');
 
+// Objeto Mensagem
 function Mensagem(id, idUsuario, idGrupo, mensagem){
 	this.id = id;
 	this.idUsuario = idUsuario;
@@ -43,6 +44,7 @@ function Mensagem(id, idUsuario, idGrupo, mensagem){
 	}
 }
 
+// Converte Query em uma lista de mensagens
 var queryToList = function(result){
 	var mensagens = [];
 
@@ -54,10 +56,12 @@ var queryToList = function(result){
 	return mensagens;
 }
 
+// Mensagens de um Grupo
 var getMsgsFromGroupPromise = function(idGrupo){
 	return mensagemDAO.getMsgsFromGroup(idGrupo);
 }
 
+// Envia Mensagem
 var insertMsg = function(req, res){
 	var idUsuario = req.body.idUsuario;
 	var idGrupo = req.body.idGrupo;
@@ -72,6 +76,7 @@ var insertMsg = function(req, res){
 
 }
 
+// Mensagens de um grupo (request)
 var getMsgsFromGroup = function(req, res){
 	var idGrupo = req.body.idGrupo;
 	var promise = this.getMsgsFromGroupPromise(idGrupo);

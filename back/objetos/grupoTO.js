@@ -1,12 +1,16 @@
+var JSONfn = require('json-fn');
 var mensagem = require('./mensagemTO.js');
+var usuario = require('./usuarioTO.js');
 var grupoDAO = require('../query/grupoDAO');
 
-function Grupo (id, inbox, nome, idUsuarioA, idUsuarioB){
+
+// Objeto Grupo
+function Grupo (id, inbox, nome, usuarioA, usuarioB){
 	this.id = id;
 	this.inbox = inbox;
 	this.nome = nome;
-	this.idUsuarioA = idUsuarioA;
-	this.idUsuarioB = idUsuarioB;
+	this.usuarioA = usuarioA;
+	this.usuarioB = usuarioB;
 
 	this.messages = [];
 
@@ -33,16 +37,24 @@ function Grupo (id, inbox, nome, idUsuarioA, idUsuarioB){
 		return this.inbox;
 	}
 
-	this.getNome = function(){
+	this.getNome = function(idUser){
+		if(!this.inbox || this.usuarioA == null || this.usuarioB == null)
+			return this.nome;
+
+		if(idUser == this.usuarioA.id)
+			return this.usuarioB.nome;
+		if(idUser == this.usuarioB.id)
+			return this.usuarioA.nome;
+
 		return this.nome;
 	}
 
-	this.getIdUsuarioA = function(){
-		return this.idUsuarioA;
+	this.getUsuarioA = function(){
+		return this.usuarioA;
 	}
 
-	this.getIdUsuarioB = function(){
-		return this.idUsuarioB;
+	this.getUsuarioB = function(){
+		return this.usuarioB;
 	}
 
 	this.setInbox = function(inbox){
@@ -53,12 +65,12 @@ function Grupo (id, inbox, nome, idUsuarioA, idUsuarioB){
 		this.nome = nome;
 	}
 
-	this.setIdUsuarioA = function(idUsuarioA){
-		this.idUsuarioA = idUsuarioA;
+	this.setUsuarioA = function(usuarioA){
+		this.usuarioA = usuarioA;
 	}
 
-	this.setIdUsuarioB = function(idUsuarioB){
-		this.idUsuarioB = idUsuarioB;
+	this.setUsuarioB = function(usuarioB){
+		this.usuarioB = usuarioB;
 	}
 
 	this.save = function(){
@@ -66,29 +78,45 @@ function Grupo (id, inbox, nome, idUsuarioA, idUsuarioB){
 	}
 
 	this.print = function(){
-		console.log([this.id, this.inbox, this.nome, this.idUsuarioA, this.idUsuarioB].join(' | '));
+		console.log([this.id, this.inbox, this.nome, this.usuarioA, this.usuarioB].join(' | '));
 	}
 }
 
+// Dado idUsuario, lista os grupos
 var listUserGroups = function (req, res) {
 	var idUsuario = req.body.idUsuario;
 	var promise = grupoDAO.listUserGroups(idUsuario);
 
 	promise.then(function(result){
 		var grupos = {};
+		console.log(result);
 		result.forEach(function(g){
-			grupos[g.g_id] = grupos[g.g_id] || new Grupo(g.g_id, g.g_inbox==0?false:true, g.g_nome, g.g_idUsuarioA, g.g_idUsuarioB);
-			msg = new mensagem.Mensagem(g.m_id, g.m_idUsuario, g.m_idGrupo, g.m_mensagem);
-			grupos[g.g_id].messages.push(msg);
+			if(grupos[g.g_id] === undefined){
+				var ua = null;
+				var ub = null;
+				if(g.ua_id !== null)
+					ua = new usuario.Usuario(g.ua_id, g.ua_login, '', g.ua_nome, g.ua_tipoUsuario);
+				if(g.ub_id !== null)
+					ub = new usuario.Usuario(g.ub_id, g.ub_login, '', g.ub_nome, g.ub_tipoUsuario);
+
+				grupos[g.g_id] = new Grupo(g.g_id, g.g_inbox==0?false:true, g.g_nome, ua, ub);
+			}
+
+			if(g.m_id !== null){
+				msg = new mensagem.Mensagem(g.m_id, g.m_idUsuario, g.m_idGrupo, g.m_mensagem);
+				grupos[g.g_id].messages.push(msg);
+			}
 		});
 
-		res.json(grupos);
+		console.log(JSON.stringify(grupos));
+		res.json(JSONfn.stringify(grupos));
 	}).catch(function(error){
 		console.log(error);
 		res.status(500).send('internal server error');
 	});
 };
 
+// Dado o idGrupo, retorna o grupo
 var getGrupo = function(req, res){
 	var idGrupo = req.body.idGrupo;
 	var promise = grupoDAO.getGrupo(idGrupo);

@@ -1,4 +1,5 @@
 var express = require('express');
+var session = require('express-session');
 var app = express();
 var bodyParser = require('body-parser');
 var router = require('./router');
@@ -21,6 +22,7 @@ app.use(function (req, res, next) {
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+app.use(session({secret: "Hives123$", resave: true, saveUninitialized: true,  cookie: { maxAge: 60000 } }));
 
 router.defineRoutes(app);
 

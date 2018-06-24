@@ -3,16 +3,16 @@ const format = require('string-format');
 
 // declara os Selects em variáveis
 var findAllQuery = 'SELECT * FROM Usuario';
-var checkLoginQuery = "SELECT * FROM Usuario where login = '{0}' and senha = '{1}'"
+var checkLoginQuery = "SELECT * FROM Usuario where login = '{0}' and senha = '{1}'";
 var getUserNameQuery = "SELECT nome FROM Usuario where id = {0}";
 
 var getFullUserQuery = "SELECT * FROM Usuario where id = {0}";
 var updateUserQuery =`UPDATE Usuario
-						SET login = '{1}',
-							senha = '{2}',
-							nome = '{3}',
-							tipoUsuario = {4}
-						WHERE id = {0}`;
+											SET login = '{1}',
+												senha = '{2}',
+												nome = '{3}',
+												tipoUsuario = {4}
+											WHERE id = {0}`;
 
 // declara a função que executa o select
 var findAll = function() {

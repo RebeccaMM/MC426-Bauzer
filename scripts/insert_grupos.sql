@@ -1,5 +1,5 @@
-// Aqui eu insiro as relações dos usuarios
-// Chutei uns ids... imagino que sejam os mesmos para todo mundo haha
+-- Aqui eu insiro as relações dos usuarios
+-- Chutei uns ids... imagino que sejam os mesmos para todo mundo haha
 INSERT INTO Grupo(inbox, nome, idUsuarioA, idUsuarioB)
 VALUES (true, '', 1, 2),
         (true, '', 1, 3),

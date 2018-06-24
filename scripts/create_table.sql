@@ -30,8 +30,8 @@ CREATE TABLE Grupo (
   id int AUTO_INCREMENT,
   inbox boolean not null,
   nome varchar(30),
-  idUsuarioA int not null, // Só para manter um registro de quem é o "Admin" da conversa. Nada a ver com a listagem na lista de contatos
-  idUsuarioB int, // Mesma coisa aqui
+  idUsuarioA int not null, -- Só para manter um registro de quem é o "Admin" da conversa. Nada a ver com a listagem na lista de contatos
+  idUsuarioB int, -- Mesma coisa aqui
   primary key (id),
   foreign key (idUsuarioA) references Usuario(id),
   foreign key (idUsuarioB) references Usuario(id)

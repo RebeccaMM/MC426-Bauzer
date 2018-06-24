@@ -1,4 +1,4 @@
-// Relação qual usuario participa de qual grupo
+-- Relação qual usuario participa de qual grupo
 INSERT INTO Usuario_Grupo(idGrupo, idUsuario)
 VALUES (1, 1),
         (2, 1),

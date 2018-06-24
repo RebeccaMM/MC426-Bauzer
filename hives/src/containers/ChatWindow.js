@@ -1,16 +1,16 @@
-import _ from 'lodash';
 import React from "react";
-import faker from 'faker';
 import axios from "axios";
 import { Container, Header, Input, Form, TextArea, Button} from 'semantic-ui-react';
 import '../Pages.css';
+
+import Global from './Global';
 
 export default class Chat extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      histMsg: '',
-      inputMsg: ''
+      inputMsg: '',
+      user: props.user
     };
 
     this.sendMsg = this.sendMsg.bind(this);
@@ -20,44 +20,39 @@ export default class Chat extends React.Component {
 
   sendMsg() {
     var msg = this.state.inputMsg;
-    console.log('envia:', msg);
     if(msg === '')
       return;
 
-    axios.post('http://localhost:8081/mensagem', {
-      idUsuario: 1,
-      idGrupo: 1,
+    msg = Global.user.nome + ': ' + msg;
+
+    Global.socket.emit('Mensagem enviada', {
+      idUsuario: Global.user.id,
+      idGrupo: this.props.grupo.id,
       mensagem: msg
-    }).then((response) => {
-      this.props.updateChat().then(() => {
-        this.forceUpdate();
-      });
-    }).catch((error) => {
-      console.log(error);
     });
 
-    this.state.inputMsg = '';
+    this.setState({ inputMsg: '' });
   }
 
   handleChange(e){
     this.setState({
-      msgHistory: this.state.msgHistory,
-      inputMsg: e.target.value
+      inputMsg: e.target.value,
+      user: this.state.user
     });
   }
 
   handleKeyPress(k){
-    if(k.key == 'Enter')
+    if(k.key === 'Enter')
       this.sendMsg();
   }
 
   render() {
-    if(this.props.grupo == undefined)
+    if(this.props.grupo === undefined)
       return (<br />)
 
     return (
       <Container fluid style={{backgroundColor: '#ddd', height: '100%' }}>
-        <Header as="h1">Chat  {this.props['grupo'].nome}</Header>
+        <Header as="h1">Chat {this.props.grupo.getNome(Global.user.id)}</Header>
         <Form style={{ height: '80%', padding: '0' }}>
           <TextArea
             disabled
@@ -84,14 +79,13 @@ export default class Chat extends React.Component {
   }
 }
 
-
-const contacts = _.times(5, () => {
-  let name = faker.name.firstName();
-  return (
-    {
-      name: name,
-      title: name,
-      image: faker.internet.avatar(),
-    }
-  );
-});
+// const contacts = _.times(5, () => {
+//   let name = faker.name.firstName();
+//   return (
+//     {
+//       name: name,
+//       title: name,
+//       image: faker.internet.avatar(),
+//     }
+//   );
+// });

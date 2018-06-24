@@ -46,3 +46,10 @@ CREATE TABLE Mensagem (
   foreign key (idUsuario) references Usuario(id),
   foreign key (idGrupo) references Grupo(id)
 );
+
+CREATE TABLE Usuario_Grupo (
+  idGrupo int not null,
+  idUsuario int not null,
+  foreign key (idGrupo) references Grupo(id),
+  foreign key (idUsuario) references Usuario(id)
+);

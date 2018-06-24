@@ -1,6 +1,6 @@
 var JSONfn = require('json-fn');
-var mensagem = require('./mensagemTO.js');
-var usuario = require('./usuarioTO.js');
+var mensagem = require('./mensagemObj');
+var usuario = require('./usuarioObj');
 var grupoDAO = require('../query/grupoDAO');
 
 
@@ -89,7 +89,7 @@ var listUserGroups = function (req, res) {
 
 	promise.then(function(result){
 		var grupos = {};
-		console.log(result);
+
 		result.forEach(function(g){
 			if(grupos[g.g_id] === undefined){
 				var ua = null;
@@ -108,7 +108,6 @@ var listUserGroups = function (req, res) {
 			}
 		});
 
-		console.log(JSON.stringify(grupos));
 		res.json(JSONfn.stringify(grupos));
 	}).catch(function(error){
 		console.log(error);

@@ -1,8 +1,14 @@
-var express = require('express');
-var session = require('express-session');
-var app = express();
+const express = require('express');
+const socketIO = require('socket.io');
+const http = require('http');
+
+const app = express();
+const server = http.createServer(app);
+const io = socketIO(server);
+
 var bodyParser = require('body-parser');
 var router = require('./router');
+var socket = require('./socket');
 
 // Add headers
 app.use(function (req, res, next) {
@@ -22,13 +28,12 @@ app.use(function (req, res, next) {
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-app.use(session({secret: "Hives123$", resave: true, saveUninitialized: true,  cookie: { maxAge: 60000 } }));
 
+socket.events(io);
 router.defineRoutes(app);
 
 // Configura porta da API. Acessar localhost:8081/pessoa vai te deixar visualizar o resultado.
-var server = app.listen(8081, function () {
-
+server.listen(8081, function () {
    var host = server.address().address
    var port = server.address().port
    console.log("Example app listening at http://%s:%s", host, port)

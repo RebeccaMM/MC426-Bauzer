@@ -45,7 +45,7 @@ export default class ContactList extends React.Component {
         <Header as='h2' style={{color:'white'}}>Inbox</Header>
         <Divider />
         <Header as='h3' style={{color:'white'}}>Contacts</Header>
-        <ContactSearch contacts={contacts} fluid style={{marginBottom:'0.75em'}}/>
+        <ContactSearch contacts={contacts} fluid style={{marginBottom:'0.75em'}} selContato={this.props.selContato}/>
         <Label.Group style={{ height: '80%', overflowY: 'auto', overflowX: 'hidden' }}>
           {contactItems}
         </Label.Group>

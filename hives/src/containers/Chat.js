@@ -1,9 +1,11 @@
 import React from "react";
 import faker from 'faker';
 import axios from "axios";
+import JSONfn from 'json-fn';
 import { Container, Header, Grid } from 'semantic-ui-react';
 
 import '../Pages.css';
+import Global from './Global';
 
 import ContactList from '../containers/ContactList';
 import ChatWindow from '../containers/ChatWindow';
@@ -13,7 +15,8 @@ export default class Chat extends React.Component {
     super(props);
     this.state = {
       contacts : [],
-      grupoSelecionado: undefined
+      grupoSelecionado: undefined,
+      user: props.user
     };
   }
 
@@ -22,12 +25,13 @@ export default class Chat extends React.Component {
   }
 
   buscaGrupos = () => {
-    return axios.post('http://localhost:8081/grupos', { idUsuario: 1 })
+    return axios.post('http://localhost:8081/grupos', { idUsuario: Global.user.id })
     .then((response) => {
-      var grupos = response.data;
+      var grupos = JSONfn.parse(response.data);
 
       for(var g in grupos){
-        grupos[g].name = grupos[g].nome;
+        grupos[g].name = grupos[g].getNome(Global.user.id);
+        grupos[g].title = grupos[g].getNome(Global.user.id);
         grupos[g].image = faker.internet.avatar();
       }
 
@@ -37,7 +41,8 @@ export default class Chat extends React.Component {
 
       this.setState({
         contacts: grupos,
-        grupoSelecionado: gSel
+        grupoSelecionado: gSel,
+        user: this.state.user
       });
     });
   }
@@ -50,19 +55,24 @@ export default class Chat extends React.Component {
     console.log(grupo);
     this.setState({
       contacts: this.state.contacts,
-      grupoSelecionado: grupo
+      grupoSelecionado: grupo,
+      user: this.state.user
     });
   };
 
   render() {
+    Global.socket.on('Mensagem nova', () => {
+      this.buscaGrupos();
+    })
+
     return (
       <Container fluid style={{ margin: '1em', backgroundColor: '#dddddd' }}>
         <Grid style={{ height: '100vh' }}>
           <Grid.Column width={3} style={{ height: '100%' }}>
-            <ContactList contacts={this.state.contacts} selContato={this.selContato}/>
+            <ContactList contacts={this.state.contacts} selContato={this.selContato} user={this.state.user}/>
           </Grid.Column>
           <Grid.Column width={13} style={{ paddingLeft: '1%', paddingRight: '2.5%' }}>
-            <ChatWindow grupo={this.state.grupoSelecionado} updateChat={this.updateChat}/>
+            <ChatWindow grupo={this.state.grupoSelecionado} updateChat={this.updateChat} user={this.state.user}/>
           </Grid.Column>
         </Grid>
       </Container>

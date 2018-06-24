@@ -73,17 +73,6 @@ var getAllUsers = function(req, res){
 
 // Login
 var checkLogin = function(req, res){
-	console.log(req.session.user);
-	if(JSON.stringify(req.body) === JSON.stringify({})){
-		if(req.session.user !== undefined){
-			res.json(u);
-		}
-		else{
-			res.status(403).send('Usuario ou senha invalidos');
-		}
-		return;
-	}
-
 	var login = req.body.login;
 	var senha = req.body.senha;
 	var promise = usuarioDAO.login(login, senha);
@@ -96,7 +85,6 @@ var checkLogin = function(req, res){
 			res.json(JSON.stringify(u));
 		}
 	}).catch(function(error){
-		req.session.user = undefined;
 		res.status(500).send('internal server error');
 	});
 }

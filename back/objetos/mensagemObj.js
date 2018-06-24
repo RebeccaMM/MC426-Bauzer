@@ -73,7 +73,10 @@ var insertMsg = function(req, res){
 	}).catch(function(error){
 		res.status(500).send('internal server error');
 	});
+}
 
+var enviaMsg = function(msg){
+	return promise = mensagemDAO.insertMsg(msg.idUsuario, msg.idGrupo, msg.mensagem);
 }
 
 // Mensagens de um grupo (request)
@@ -93,5 +96,6 @@ var getMsgsFromGroup = function(req, res){
 // Expõe o método para o módulo (analogia: tornar o método public)
 module.exports = {
 	Mensagem: Mensagem,
-	insertMsg: insertMsg
+	insertMsg: insertMsg,
+	enviaMsg: enviaMsg
 }

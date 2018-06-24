@@ -25,7 +25,7 @@ export default class ContactList extends React.Component {
 
     const contactItems = _.map(contacts,(c) => {
       return (
-        <Label as='a' size='large' style={{ padding: '0.25em 0.5em', width: '100%'}} key={c.name} onClick={() => this.props.selContato(c.id)}>
+        <Label as='a' size='large' style={{ padding: '0.25em 0.5em', width: '100%'}} key={c.name} onClick={() => this.props.selContato(c)}>
           <img src={c.image} style={{ margin: '0em 0.5em' }}/>
           {c.name}
             <Label circular color='yellow' key={'qtty_'+c.name} content={10} style={{float:'right'}}/>

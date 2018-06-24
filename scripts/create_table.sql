@@ -5,7 +5,7 @@ CREATE TABLE Usuario (
   nome varchar(30) not null,
   tipoUsuario int not null,
   primary key (id)
-)
+);
 
 CREATE TABLE Vaga (
   id int AUTO_INCREMENT,
@@ -14,7 +14,7 @@ CREATE TABLE Vaga (
   idEmpresa int,
   primary key (id),
   foreign key (idEmpresa) references Usuario(id)
-)
+);
 
 CREATE TABLE Interesse (
   id int AUTO_INCREMENT,
@@ -24,4 +24,25 @@ CREATE TABLE Interesse (
   idVaga int not null,
   primary key (id),
   foreign key (idVaga) references Vaga(id)
-)
+);
+
+CREATE TABLE Grupo (
+  id int AUTO_INCREMENT,
+  inbox boolean not null,
+  nome varchar(30),
+  idUsuarioA int not null,
+  idUsuarioB int,
+  primary key (id),
+  foreign key (idUsuarioA) references Usuario(id),
+  foreign key (idUsuarioB) references Usuario(id)
+);
+
+CREATE TABLE Mensagem (
+  id int AUTO_INCREMENT,
+  idUsuario int not null,
+  idGrupo int not null,
+  mensagem text not null,
+  primary key (id),
+  foreign key (idUsuario) references Usuario(id),
+  foreign key (idGrupo) references Grupo(id)
+);

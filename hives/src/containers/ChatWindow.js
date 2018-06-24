@@ -1,14 +1,15 @@
 import _ from 'lodash';
 import React from "react";
-import faker from 'faker'
-import { Container, Header, Grid, Input, Form, TextArea, Button} from 'semantic-ui-react';
+import faker from 'faker';
+import axios from "axios";
+import { Container, Header, Input, Form, TextArea, Button} from 'semantic-ui-react';
 import '../Pages.css';
 
 export default class Chat extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      msgHistory: '',
+      histMsg: '',
       inputMsg: ''
     };
 
@@ -18,14 +19,24 @@ export default class Chat extends React.Component {
   }
 
   sendMsg() {
-    if(this.state.inputMsg == '')
+    var msg = this.state.inputMsg;
+    console.log('envia:', msg);
+    if(msg === '')
       return;
 
-    var h = this.state.msgHistory + this.state.inputMsg + '\r\n';
-    this.setState({
-      msgHistory: h,
-      inputMsg: ''
-    })
+    axios.post('http://localhost:8081/mensagem', {
+      idUsuario: 1,
+      idGrupo: 1,
+      mensagem: msg
+    }).then((response) => {
+      this.props.updateChat().then(() => {
+        this.forceUpdate();
+      });
+    }).catch((error) => {
+      console.log(error);
+    });
+
+    this.state.inputMsg = '';
   }
 
   handleChange(e){
@@ -41,15 +52,18 @@ export default class Chat extends React.Component {
   }
 
   render() {
+    if(this.props.grupo == undefined)
+      return (<br />)
+
     return (
       <Container fluid style={{backgroundColor: '#ddd', height: '100%' }}>
-        <Header as="h1">Chat {this.props.idGrupo}</Header>
+        <Header as="h1">Chat  {this.props['grupo'].nome}</Header>
         <Form style={{ height: '80%', padding: '0' }}>
           <TextArea
             disabled
             readOnly
             style={{ height: '100%', resize: 'none' }}
-            value={this.state.msgHistory}
+            value={this.props['grupo'].messages.map(function(g){ return g.mensagem }).join('\r\n')}
           />
         </Form>
         <Input

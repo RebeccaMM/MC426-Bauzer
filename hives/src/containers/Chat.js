@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import React from "react";
 import faker from 'faker';
 import axios from "axios";
@@ -14,28 +13,46 @@ export default class Chat extends React.Component {
     super(props);
     this.state = {
       contacts : [],
-      conversaSelecionada: null
+      grupoSelecionado: undefined
     };
   }
 
   componentDidMount(){
-    axios.get('http://localhost:8081/usuarios')
+    this.buscaGrupos();
+  }
+
+  buscaGrupos = () => {
+    return axios.post('http://localhost:8081/grupos', { idUsuario: 1 })
     .then((response) => {
-      response.data.forEach(function(u){
-        u.name = u.nome;
-        u.image = faker.internet.avatar();
+      var grupos = response.data;
+
+      for(var g in grupos){
+        grupos[g].name = grupos[g].nome;
+        grupos[g].image = faker.internet.avatar();
+      }
+
+      var gSel = this.state.grupoSelecionado;
+      if(gSel !== undefined)
+        gSel = grupos[gSel.id];
+
+      this.setState({
+        contacts: grupos,
+        grupoSelecionado: gSel
       });
-      this.setState({contacts: response.data});
     });
   }
 
-  selContato = (idConversa) => {
+  updateChat = () => {
+    return this.buscaGrupos();
+  }
+
+  selContato = (grupo) => {
+    console.log(grupo);
     this.setState({
       contacts: this.state.contacts,
-      conversaSelecionada: idConversa
+      grupoSelecionado: grupo
     });
   };
-
 
   render() {
     return (
@@ -45,7 +62,7 @@ export default class Chat extends React.Component {
             <ContactList contacts={this.state.contacts} selContato={this.selContato}/>
           </Grid.Column>
           <Grid.Column width={13} style={{ paddingLeft: '1%', paddingRight: '2.5%' }}>
-            <ChatWindow idGrupo={this.state.conversaSelecionada}/>
+            <ChatWindow grupo={this.state.grupoSelecionado} updateChat={this.updateChat}/>
           </Grid.Column>
         </Grid>
       </Container>

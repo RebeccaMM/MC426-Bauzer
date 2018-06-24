@@ -2,7 +2,7 @@ var mysql = require('mysql');
 
 var connection = mysql.createConnection({
   host     : 'localhost',
-  user     : 'hives',
+  user     : 'root',
   password : '',
   database : 'hives'
 });
@@ -19,7 +19,7 @@ var query = function (query) {
     var queryCallback = function(error, results, fields) {
       if (error) throw error;
 
-      console.log('Got from mysql: ', results[0]);
+      // console.log('Got from mysql: ', results[0]);
 
       resolve(results);
     };

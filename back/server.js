@@ -25,9 +25,9 @@ app.use(bodyParser.json());
 router.defineRoutes(app);
 
 // Configura porta da API. Acessar localhost:8081/pessoa vai te deixar visualizar o resultado.
-var server = app.listen(8081, "0.0.0.0" function () {
+var server = app.listen(8081, "0.0.0.0", function () {
 
    var host = server.address().address
    var port = server.address().port
    console.log("Example app listening at http://%s:%s", host, port)
-})
+});

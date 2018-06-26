@@ -29,17 +29,40 @@ WHERE ug.idUsuario = {0}`;
 
 var getGrupoQuery = `SELECT * FROM Grupo WHERE id = {0}`;
 
+var criaInboxersQuery =
+`INSERT INTO Grupo(inbox, nome, idUsuarioA, idUsuarioB)
+SELECT 1 as inbox, '' as nome, id as idUsuarioA, {0} as idUsuarioB
+FROM Usuario
+WHERE id <> {0}`;
+
+var insereRelacoesQuery =
+`INSERT INTO Usuario_Grupo(idGrupo, idUsuario)
+SELECT id as idGrupo, idUsuario{0} as idUsuario
+FROM Grupo
+WHERE idUsuarioB = {1}`;
+
 // declara a função que executa o select
 var listUserGroups = function(idUser) {
 	return db.query(format(listUserGroupsQuery, idUser));
 }
 
 var getGrupo = function(idGrupo) {
-	return db.query(format(getGrupo, idGrupo));
+	return db.query(format(getGrupoQuery, idGrupo));
+}
+
+var criaInboxers = function(idUser){
+	return db.query(format(criaInboxersQuery, idUser))
+	.then(result => {
+		return db.query(format(insereRelacoesQuery, 'A', idUser))
+		.then(result => {
+			return db.query(format(insereRelacoesQuery, 'B', idUser));
+		})
+	});
 }
 
 // Expõe o método para o módulo (analogia: tornar o método public)
 module.exports = {
 	listUserGroups: listUserGroups,
-	getGrupo: getGrupo
+	getGrupo: getGrupo,
+	criaInboxers: criaInboxers
 }

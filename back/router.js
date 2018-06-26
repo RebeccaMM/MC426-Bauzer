@@ -14,6 +14,7 @@ var defineRoutes = function (app) {
 	app.post('/vaga/addVaga', vaga.post);
 	app.post('/grupos', grupo.listUserGroups);
 	app.post('/mensagem', mensagem.insertMsg);
+	app.post('/usuario/novo', usuarioObj.insertUser);
 }
 
 module.exports = {

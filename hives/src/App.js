@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Redirect, withRouter } from "react-router-dom";
+import { BrowserRouter as Router, Route, Redirect, withRouter, Link } from "react-router-dom";
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
 import axios from "axios";
 import logo from './assets/logo.png';
 import socketIOClient from "socket.io-client";
 
 import './App.css';
-import Global from './containers/Global'
+import Global from './containers/Global';
 
 import Dashboard from './containers/Dashboard';
 import Chat from './containers/Chat';
 import Opportunity from './containers/Opportunity';
+import Signup from './containers/Signup';
 
 export default class App extends Component {
 
@@ -26,6 +27,7 @@ export default class App extends Component {
           <PrivateRoute path="/chat" component={Chat} />
           <Route exact path="/login" component={Login}/>
           <Route path="/opportunity" component={Opportunity}/>
+          <Route path="/signup" component={Signup}/>
           <Route path="/dashboard" to='/'/>
         </div>
       </Router>
@@ -174,7 +176,12 @@ class Login extends React.Component {
               </Segment>
             </Form>
             <Message>
-              New to us? <a href='http://www.google.com'>Sign Up</a>
+              New to us?
+              <div>
+                <Link to="/signup">
+                  <button name='signup' class="blue ui button">Sign up</button>
+                </Link>
+              </div>
             </Message>
           </Grid.Column>
         </Grid>

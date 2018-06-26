@@ -9,7 +9,10 @@ export default class ContactSearch extends Component {
 
   resetComponent = () => this.setState({ isLoading: false, results: [], value: '' })
 
-  handleResultSelect = (e, { result }) => this.setState({ value: result.name })
+  handleResultSelect = (e, { result }) => {
+    this.setState({ value: '' });
+    this.props.selContato(result);
+  };
 
   handleSearchChange = (e, { value }) => {
     this.setState({ isLoading: true, value })

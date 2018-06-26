@@ -3,14 +3,21 @@ import { BrowserRouter as Router, Route, Redirect, withRouter } from "react-rout
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
 import axios from "axios";
 import logo from './assets/logo.png';
+import socketIOClient from "socket.io-client";
 
 import './App.css';
+import Global from './containers/Global'
 
 import Dashboard from './containers/Dashboard';
 import Chat from './containers/Chat';
 import Opportunity from './containers/Opportunity';
 
 export default class App extends Component {
+
+  componentDidMount(){
+    Global.socket = socketIOClient(Global.endpoint);
+  }
+
   render() {
     return (
       <Router>
@@ -33,6 +40,7 @@ export const fakeAuth = {
     setTimeout(cb, 100); // fake async
   },
   signout(cb) {
+    Global.user = null;
     this.isAuthenticated = false;
     setTimeout(cb, 100);
   }
@@ -83,10 +91,11 @@ class Login extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
     axios.post('http://localhost:8081/usuario/login', {
-      username: this.state.username,
+      login: this.state.username,
       senha: this.state.password,
     })
     .then((response) => {
+      Global.user = JSON.parse(response.data);
       this.login();
     })
     .catch((error) => {

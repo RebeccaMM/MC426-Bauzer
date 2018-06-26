@@ -24,7 +24,8 @@ var getUserName = function (req, res) {
   })
 };
 
-var checkLogin = function (req, res) {
+// Uso o meu login hehe
+/*var checkLogin = function (req, res) {
   var username = req.body.username;
   var senha = req.body.senha;
   var promise = usuarioDAO.login(username, senha);
@@ -38,11 +39,11 @@ var checkLogin = function (req, res) {
   }).catch(function(error) {
     res.status(500).send('internal server error');
   });
-};
+};*/
 
 // torna public o método get
 module.exports = {
   get: get,
-  checkLogin: checkLogin,
+  // checkLogin: checkLogin,
   getUserName: getUserName
 };

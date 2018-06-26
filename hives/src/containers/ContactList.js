@@ -17,17 +17,15 @@ export default class ContactList extends React.Component {
     activeItem: undefined,
   }
 
-  handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+  handleItemClick = (e, { name }) => this.setState({ activeItem: name });
 
   render() {
     const { activeItem } = this.state;
     const { contacts } = this.props;
 
-    console.log(this.state);
-
     const contactItems = _.map(contacts,(c) => {
       return (
-        <Label as='a' size='large' style={{ padding: '0.25em 0.5em', width: '100%'}} key={c.name}>
+        <Label as='a' size='large' style={{ padding: '0.25em 0.5em', width: '100%'}} key={c.name} onClick={() => this.props.selContato(c)}>
           <img src={c.image} style={{ margin: '0em 0.5em' }}/>
           {c.name}
             <Label circular color='yellow' key={'qtty_'+c.name} content={10} style={{float:'right'}}/>
@@ -47,8 +45,8 @@ export default class ContactList extends React.Component {
         <Header as='h2' style={{color:'white'}}>Inbox</Header>
         <Divider />
         <Header as='h3' style={{color:'white'}}>Contacts</Header>
-      <ContactSearch contacts={contacts} fluid style={{marginBottom:'0.75em'}}/>
-      <Label.Group>
+        <ContactSearch contacts={contacts} fluid style={{marginBottom:'0.75em'}} selContato={this.props.selContato}/>
+        <Label.Group style={{ height: '80%', overflowY: 'auto', overflowX: 'hidden' }}>
           {contactItems}
         </Label.Group>
       </Container>

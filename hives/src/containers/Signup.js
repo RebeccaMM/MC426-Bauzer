@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Redirect, withRouter, Link } from "react-router-dom";
-import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
+import { Button, Form, Grid, Header, Image, Message, Segment, Radio } from 'semantic-ui-react';
 import axios from "axios";
 import logo from '../assets/logo.png';
 import socketIOClient from "socket.io-client";
 
 import '../App.css';
 import Global from './Global';
+import { randomFill } from 'crypto';
 
 export default class Signup extends Component {
   state = {
@@ -15,6 +16,7 @@ export default class Signup extends Component {
     username: '',
     password: '',
     password_confirmation:'',
+    type_of_user:-1,
     errorMessage: false,
   };
 
@@ -54,9 +56,10 @@ export default class Signup extends Component {
                   icon='user'
                   iconPosition='left'
                   placeholder='Name'
-                  value={ username }
+                  value={ name }
                   onChange={(e) => this.setState({ name: e.target.value })}
                 />
+                
                 <Form.Input
                   fluid
                   icon='at'
@@ -80,12 +83,31 @@ export default class Signup extends Component {
                   iconPosition='left'
                   placeholder='Confirm your password'
                   type='password'
-                  value={ password }
+                  value={ password_confirmation }
                   onChange={(e) => this.setState({ password_confirmation: e.target.value })}
                 />
-
+                <Form.Field>
+                  Account type:
+                </Form.Field>
+                  <Form.Field>
+                    <Radio
+                      label='Normal'
+                      value='1'
+                      checked={this.state.type_of_user === 1}
+                      onChange={(e, { value }) => this.setState({ type_of_user: parseInt(value, 10) })}
+                    />
+                  </Form.Field>
+                  <Form.Field>
+                    <Radio
+                      label='Business'
+                      value='0'
+                      checked={this.state.type_of_user == 0}
+                      onChange={(e, { value }) => this.setState({ type_of_user: parseInt(value, 10) })}
+                    />
+                  </Form.Field>
               <Button color='yellow' fluid size='large' onClick={this.handleSubmit}>Create account</Button>
               </Segment>
+              
             </Form>
           </Grid.Column>
         </Grid>

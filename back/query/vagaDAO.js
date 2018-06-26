@@ -4,7 +4,7 @@ const format = require('string-format');
 // declara os Selects em variáveis
 var getAllQuery = 'SELECT * FROM Vaga';
 var getPorEmpresaQuery = "SELECT * FROM Vaga where idEmpresa = {0}"
-var insertVagaQuery = "INSET INTO Vaga (titulo, descricao, idEmpresa) VALUES ('{0}', '{1}', {2})"
+var insertVagaQuery = "INSERT INTO Vaga (titulo, descricao, idEmpresa) VALUES ('{0}', '{1}', {2})"
 
 // declara a função que executa o select
 var getAll = function() {

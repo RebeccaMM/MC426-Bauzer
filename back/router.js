@@ -1,5 +1,6 @@
 var usuario = require('./usuario');
 var vaga = require('./vaga');
+var interesse = require('./interesse');
 var grupo = require('./objetos/grupoObj');
 var mensagem = require('./objetos/mensagemObj');
 var usuarioObj = require('./objetos/usuarioObj');
@@ -15,6 +16,7 @@ var defineRoutes = function (app) {
 	app.post('/grupos', grupo.listUserGroups);
 	app.post('/mensagem', mensagem.insertMsg);
 	app.post('/usuario/novo', usuarioObj.insertUser);
+	app.post('/interesse', interesse.novoInteresse);
 }
 
 module.exports = {

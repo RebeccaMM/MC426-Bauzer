@@ -95,7 +95,8 @@ class Login extends React.Component {
       senha: this.state.password,
     })
     .then((response) => {
-      Global.user = JSON.parse(response.data);
+      Global.user = response.data;
+      console.log(Global.user);
       this.login();
     })
     .catch((error) => {

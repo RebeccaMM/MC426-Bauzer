@@ -3,7 +3,6 @@ var mensagem = require('./mensagemObj');
 var usuario = require('./usuarioObj');
 var grupoDAO = require('../query/grupoDAO');
 
-
 // Objeto Grupo
 function Grupo (id, inbox, nome, usuarioA, usuarioB){
 	this.id = id;
@@ -127,8 +126,13 @@ var getGrupo = function(req, res){
 	});
 };
 
+var novoUsuarioPromise = function(idUser){
+	return grupoDAO.criaInboxers(idUser);
+}
+
 // torna public o método get
 module.exports = {
   listUserGroups: listUserGroups,
-  getGrupo: getGrupo
-};
+  getGrupo: getGrupo,
+	novoUsuarioPromise: novoUsuarioPromise
+}

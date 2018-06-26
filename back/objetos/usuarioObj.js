@@ -82,7 +82,7 @@ var checkLogin = function(req, res){
 		}
 		else{
 			var u = new Usuario(result[0].id, result[0].login, result[0].senha, result[0].nome, result[0].tipoUsuario);
-			res.json(JSON.stringify(u));
+			res.json(u);
 		}
 	}).catch(function(error){
 		res.status(500).send('internal server error');
@@ -101,7 +101,34 @@ var getFullUser = function(req, res){
 	});
 }
 
+// Insere novo usuarios
+var insertUser = function(req, res){
+	var login = req.body.login;
+	var senha = req.body.senha;
+	var nome = req.body.nome;
+	var tipoUsuario = req.body.tipoUsuario;
+
+	console.log(req.body);
+
+	var promise = usuarioDAO.insertUser(login, senha, nome, tipoUsuario);
+	promise.then(function(result){
+		var grupo = require('./grupoObj');
+
+		// Cria grupos de Inboxer
+		var prom = grupo.novoUsuarioPromise(result[0].id);
+		prom.then(result => {
+			res.status(200).send('Toppissimo');
+		}).catch(error => {
+			res.status(500).send('internal server error');
+		});
+
+	}).catch(function(error){
+		res.status(500).send('internal server error');
+	});
+}
+
 module.exports = {
 	Usuario: Usuario,
-	checkLogin: checkLogin
+	checkLogin: checkLogin,
+	insertUser: insertUser
 }

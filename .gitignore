@@ -61,4 +61,4 @@ typings/
 .next
 
 #file db.js
-/back/db.js
+back/db.js

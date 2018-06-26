@@ -12,6 +12,7 @@ import Dashboard from './containers/Dashboard';
 import Chat from './containers/Chat';
 import Opportunity from './containers/Opportunity';
 import Signup from './containers/Signup';
+import Candidates from './containers/Candidates';
 
 export default class App extends Component {
 
@@ -27,6 +28,7 @@ export default class App extends Component {
           <PrivateRoute path="/chat" component={Chat} />
           <Route exact path="/login" component={Login}/>
           <Route path="/opportunity" component={Opportunity}/>
+          <Route path="/candidates" component={Candidates} />
           <Route path="/signup" component={Signup}/>
           <Route path="/dashboard" to='/'/>
         </div>

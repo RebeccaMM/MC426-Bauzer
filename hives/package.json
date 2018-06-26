@@ -11,6 +11,8 @@
     "react-dom": "^16.4.1",
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.4",
+    "react-toastr": "^3.0.0",
+    "reactjs-toastr": "^1.1.0",
     "semantic-ui-css": "^2.3.2",
     "semantic-ui-react": "^0.80.2",
     "socket.io-client": "^2.1.1"

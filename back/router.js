@@ -17,6 +17,7 @@ var defineRoutes = function (app) {
 	app.post('/mensagem', mensagem.insertMsg);
 	app.post('/usuario/novo', usuarioObj.insertUser);
 	app.post('/interesse', interesse.novoInteresse);
+	app.get('/interesse/getInteressados', interesse.getInteressados);
 }
 
 module.exports = {

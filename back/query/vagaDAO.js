@@ -16,7 +16,8 @@ var getPorEmpresa = function (idEmpresa) {
 }
 
 var addVaga = function (vaga) {
-  return db.query(format(insertVagaQuery, vaga.titulo, vaga.decricao, vaga.empresa));
+  
+  return db.query(format(insertVagaQuery, vaga.titulo, vaga.descricao, vaga.empresa));
 }
 
 // Expõe o método para o módulo (analogia: tornar o método public)

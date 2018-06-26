@@ -24,8 +24,23 @@ var novoInteresse = function (req, res) {
     res.status(500).send('unexpected error');
   });
 };
+var getInteressados = function (req, res) {
+  var interesse = req.body.idEmpresa;
+  var promise = interesseDAO.getInteressados(interesse);
+
+  promise.then(function (result) {
+    if (typeof result === null || typeof result === 'undefined') {
+      res.status(403).send('Forbidden');
+    } else {
+      res.json(result);
+    }
+  }).catch(function (error) {
+    res.status(500).send('Internal server error');
+  });
+};
 
 module.exports = {
   get: get,
-  novoInteresse: novoInteresse
+  novoInteresse: novoInteresse,
+  getInteressados: getInteressados
 };

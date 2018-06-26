@@ -22,7 +22,8 @@ var getPorEmpresa = function (req, res) {
 };
 
 var post = function (req, res) {
-  var tituloVaga = req.body.vaga;
+  var vaga = req.body.vaga;
+  console.log(vaga);
   var promise = vagaDAO.addVaga(vaga);
 
   promise.then(function(result) {

@@ -10,7 +10,10 @@ export default class Opportunity extends React.Component {
     apply : -1,
     title: '',
     description: '',
-    
+    name_candidate:'',
+    email:'',
+    phone:'',
+    vacancyId: -1,
   }
 
   componentWillMount() {
@@ -33,20 +36,51 @@ export default class Opportunity extends React.Component {
       });
   }
 
-  
+  handleCreateOpportunityApplication = (idEmpresa, e) => {
+    // console.log(e);
+    e.preventDefault();
+    // console.log(idEmpresa);
+    var interesse = {
+      nomeInteressado:this.state.name_candidate,
+      email: this.state.email,
+      telefone: this.state.phone,
+      idVaga:idEmpresa,
+    };
+
+    console.log(interesse);
+
+    axios.post('http://localhost:8081/interesse', {
+      interesse:interesse
+    })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
   handleCreateOpportunity = (e) => {
     e.preventDefault();
 
     var vacancy = {
-      id: Global.user.id,
-      title: this.state.title,
-      description: this.state.description
-    }
+      empresa: Global.user.id,
+      titulo: this.state.title,
+      descricao: this.state.description
+    };
+
+    console.log(vacancy);
 
     axios.post('http://localhost:8081/vaga/addVaga', {
       vaga:vacancy
     })
+      .then((response) => {
+        console.log(response);
+        this.setState({apply: true})
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   render() {
@@ -66,7 +100,7 @@ export default class Opportunity extends React.Component {
                   <Input size='tiny' icon='user' placeholder='Name' style={{margin : "0.5em"}}/>
                   <Input size='tiny' icon='at' placeholder='Email'  style={{margin : "0.5em"}}/>
                   <Input size='tiny' icon='phone' placeholder='Phone'  style={{margin : "0.5em"}}/>
-                  <Button fluid style={{margin : "0 0.5em"}}>Confirm Apply</Button>
+                  <Button fluid style={{margin : "0 0.5em"}} onClick={this.handleCreateOpportunityApplication.bind(this,j.idEmpresa)}>Confirm Apply</Button>
                 </div>
               }
               size='large'
@@ -79,39 +113,40 @@ export default class Opportunity extends React.Component {
       )
     });
 
-    console.log();
+    console.log(this.state.title);
 
     return (
       <Container fluid style={{ height:'100%', padding: '2em' }} textAlign='left'>
-      <Container fluid style={{ height:'100%', padding: '2em' }} textAlign='left'>
-        <Header as='h1' style={{color:'black'}}>Job Opportunities</Header>
-        <Popup
-          trigger={<button class="ui blue right floated labeled icon button">
-            <i class="plus icon"></i>
-            Create Opportunity
-          </button>}
-          content={
-            <div class="ui form">
-              <div class="field">
-                <label>Title</label>
-                <input name ='title'  icon='briefcase' placeholder='Title' style={{margin : "0.5em"}}
-                  onChange={(e) => this.setState({title: e.target.value})}
-                />
+        <Container fluid style={{ height:'100%', padding: '2em' }} textAlign='left'>
+          <Header as='h1' style={{color:'black'}}>Job Opportunities</Header>
+          <Popup
+            trigger={<button class="ui blue right floated labeled icon button">
+              <i class="plus icon"></i>
+              Create Opportunity
+            </button>}
+            content={
+              <div class="ui form">
+                <div class="field">
+                  <label>Title</label>
+                  <input name ='title'  icon='briefcase' placeholder='Title' style={{margin : "0.5em"}}
+                    onChange={(e) => this.setState({title: e.target.value})}
+                  />
+                </div>
+                <div class="field">
+                  <label>Description</label>
+                  <textarea onChange={(e) => this.setState({description: e.target.value})}>
+                  </textarea>
+                </div>
+                <Button fluid style={{margin : "0 0.5em"}} 
+                onClick={this.handleCreateOpportunity}>Create</Button>
               </div>
-              <div class="field">
-                <label>Description</label>
-                <textarea></textarea>
-              </div>
-              <Button fluid style={{margin : "0 0.5em"}} 
-               onClick={this.handleCreateOpportunity}>Create</Button>
-            </div>
-          }
-          size='large'
-          on='click'
-          style={{backgroundColor:"white"}}
-        />
+            }
+            size='large'
+            on='click'
+            style={{backgroundColor:"white"}}
+          />
 
-      </Container>
+        </Container>
         <Divider />
         <Card.Group>
           {vagas}

@@ -1,12 +1,16 @@
 import React from "react";
 import { Container, Header, Grid, Card, Button, Divider, Popup, Input } from 'semantic-ui-react';
 import axios from 'axios';
+import Global from "./Global";
 
 export default class Opportunity extends React.Component {
 
   state = {
     jobs : [],
     apply : -1,
+    title: '',
+    description: '',
+    
   }
 
   componentWillMount() {
@@ -29,6 +33,21 @@ export default class Opportunity extends React.Component {
       });
   }
 
+  
+
+  handleCreateOpportunity = (e) => {
+    e.preventDefault();
+
+    var vacancy = {
+      id: Global.user.id,
+      title: this.state.title,
+      description: this.state.description
+    }
+
+    axios.post('http://localhost:8081/vaga/addVaga', {
+      vaga:vacancy
+    })
+  }
 
   render() {
     const { jobs, apply } = this.state;
@@ -60,6 +79,8 @@ export default class Opportunity extends React.Component {
       )
     });
 
+    console.log();
+
     return (
       <Container fluid style={{ height:'100%', padding: '2em' }} textAlign='left'>
       <Container fluid style={{ height:'100%', padding: '2em' }} textAlign='left'>
@@ -73,13 +94,16 @@ export default class Opportunity extends React.Component {
             <div class="ui form">
               <div class="field">
                 <label>Title</label>
-                <input name ='title'  icon='briefcase' placeholder='Title' style={{margin : "0.5em"}}/>
+                <input name ='title'  icon='briefcase' placeholder='Title' style={{margin : "0.5em"}}
+                  onChange={(e) => this.setState({title: e.target.value})}
+                />
               </div>
               <div class="field">
                 <label>Description</label>
                 <textarea></textarea>
               </div>
-              <Button fluid style={{margin : "0 0.5em"}}>Create</Button>
+              <Button fluid style={{margin : "0 0.5em"}} 
+               onClick={this.handleCreateOpportunity}>Create</Button>
             </div>
           }
           size='large'

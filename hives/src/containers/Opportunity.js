@@ -62,7 +62,32 @@ export default class Opportunity extends React.Component {
 
     return (
       <Container fluid style={{ height:'100%', padding: '2em' }} textAlign='left'>
+      <Container fluid style={{ height:'100%', padding: '2em' }} textAlign='left'>
         <Header as='h1' style={{color:'black'}}>Job Opportunities</Header>
+        <Popup
+          trigger={<button class="ui blue right floated labeled icon button">
+            <i class="plus icon"></i>
+            Create Opportunity
+          </button>}
+          content={
+            <div class="ui form">
+              <div class="field">
+                <label>Title</label>
+                <input name ='title'  icon='briefcase' placeholder='Title' style={{margin : "0.5em"}}/>
+              </div>
+              <div class="field">
+                <label>Description</label>
+                <textarea></textarea>
+              </div>
+              <Button fluid style={{margin : "0 0.5em"}}>Create</Button>
+            </div>
+          }
+          size='large'
+          on='click'
+          style={{backgroundColor:"white"}}
+        />
+
+      </Container>
         <Divider />
         <Card.Group>
           {vagas}

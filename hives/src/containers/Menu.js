@@ -63,7 +63,7 @@ export default class MainMenu extends React.Component {
           <Menu.Item
             name='candidates'
             color="yellow"
-            style={activeItem === 'candidates' ? selectedItemStyle : itemStyle }
+            style={activeItem === 'candidates' ? selectedItemStyle : itemStyle}
             active={activeItem === 'candidates'}
             onClick={this.handleItemClick}
           >

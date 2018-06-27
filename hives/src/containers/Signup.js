@@ -20,6 +20,22 @@ export default class Signup extends Component {
     errorMessage: false,
   };
 
+  handleSubmit = () => {
+    axios.post('http://localhost:8081/usuario/novo', 
+    {
+        nome : this.state.name,
+        login : this.state.username,
+        senha : this.state.password,
+        tipoUsuario :  this.state.type_of_user
+    })
+      .then((response) => {
+        window.location = 'http://localhost:3000/login';
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   render() {
 
     const { from } = this.props.location.state || { from: { pathname: "/" } };

@@ -59,6 +59,17 @@ export default class MainMenu extends React.Component {
             Opportunities
           </Menu.Item>
         </Link>
+        <Link to="/candidates">
+          <Menu.Item
+            name='candidates'
+            color="yellow"
+            style={activeItem === 'candidates' ? selectedItemStyle : itemStyle}
+            active={activeItem === 'candidates'}
+            onClick={this.handleItemClick}
+          >
+            Candidates
+          </Menu.Item>
+        </Link>
         <Menu.Menu position='right'>
           <Menu.Item>
             <Input className='search' icon={<Icon name='search' inverted circular link />} placeholder='Search...' />

@@ -7,7 +7,7 @@ export default class Opportunity extends React.Component {
 
   state = {
     jobs : [],
-    apply : -1,
+    apply : false,
     title: '',
     description: '',
     name_candidate:'',
@@ -76,7 +76,6 @@ export default class Opportunity extends React.Component {
     })
       .then((response) => {
         console.log(response);
-        this.setState({apply: true})
       })
       .catch((error) => {
         console.log(error);
@@ -86,32 +85,37 @@ export default class Opportunity extends React.Component {
   render() {
     const { jobs, apply } = this.state;
     const vagas = jobs.map((j) => {
+      const form = <div>
+          <Input size='tiny' icon='user' placeholder='Name' style={{ margin: "0.5em" }} />
+          <Input size='tiny' icon='at' placeholder='Email' style={{ margin: "0.5em" }} />
+          <Input size='tiny' icon='phone' placeholder='Phone' style={{ margin: "0.5em" }} />
+        <Button fluid style={{ margin: "0 0.5em" }} onClick={(e) => { this.handleCreateOpportunityApplication.bind(this, j.idEmpresa)(e); this.state.apply = true; this.forceUpdate(); }}>Confirm Apply</Button>
+        </div>;
+
+      const confirm = <p style={{ color : "white" }}>Applied!</p> ;
+
       return (
         <Card
           key={jobs.indexOf(j)}
           header={j.titulo}
           meta={j.empresa}
-          description={j.descricao}
-          extra={
+          description={j.descricao}    
+          extra={        
             <Popup
               trigger={<Button color='green'>Apply</Button>}
               content={
-                <div>
-                  <Input size='tiny' icon='user' placeholder='Name' style={{margin : "0.5em"}}/>
-                  <Input size='tiny' icon='at' placeholder='Email'  style={{margin : "0.5em"}}/>
-                  <Input size='tiny' icon='phone' placeholder='Phone'  style={{margin : "0.5em"}}/>
-                  <Button fluid style={{margin : "0 0.5em"}} onClick={this.handleCreateOpportunityApplication.bind(this,j.idEmpresa)}>Confirm Apply</Button>
-                </div>
+                apply === false ? form : confirm
               }
               size='large'
               on='click'
               style={{backgroundColor:"green"}}
+              onClose={() => this.setState({ apply : false })}
             />
 
           }
         />
       )
-    });
+    }); console.log(apply);
 
     console.log(this.state.title);
 

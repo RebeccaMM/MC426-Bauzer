@@ -48,16 +48,20 @@ export default class Opportunity extends React.Component {
     };
 
     console.log(interesse);
-
-    axios.post('http://localhost:8081/interesse', {
-      interesse:interesse
-    })
-      .then((response) => {
-        console.log(response);
+    if (interesse.email !== '' && interesse.telefone !== '' && interesse.nomeInteressado !== '') {
+      axios.post('http://localhost:8081/interesse', {
+        interesse:interesse
       })
-      .catch((error) => {
-        console.log(error);
-      });
+        .then((response) => {
+          console.log(response);
+          this.setState({apply: true});
+          // this.state.apply = true; 
+          // this.forceUpdate();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   }
 
   handleCreateOpportunity = (e) => {
@@ -71,15 +75,17 @@ export default class Opportunity extends React.Component {
 
     console.log(vacancy);
 
-    axios.post('http://localhost:8081/vaga/addVaga', {
-      vaga:vacancy
-    })
-      .then((response) => {
-        console.log(response);
+    if (vacancy.titulo !== '') {
+      axios.post('http://localhost:8081/vaga/addVaga', {
+        vaga:vacancy
       })
-      .catch((error) => {
-        console.log(error);
-      });
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   }
 
   render() {
@@ -89,7 +95,8 @@ export default class Opportunity extends React.Component {
           <Input size='tiny' icon='user' placeholder='Name' style={{ margin: "0.5em" }} />
           <Input size='tiny' icon='at' placeholder='Email' style={{ margin: "0.5em" }} />
           <Input size='tiny' icon='phone' placeholder='Phone' style={{ margin: "0.5em" }} />
-        <Button fluid style={{ margin: "0 0.5em" }} onClick={(e) => { this.handleCreateOpportunityApplication.bind(this, j.idEmpresa)(e); this.state.apply = true; this.forceUpdate(); }}>Confirm Apply</Button>
+        <Button fluid style={{ margin: "0 0.5em" }} onClick={(e) => { this.handleCreateOpportunityApplication.bind(this, j.idEmpresa)(e); 
+           }}>Confirm Apply</Button>
         </div>;
 
       const confirm = <p style={{ color : "white" }}>Applied!</p> ;
@@ -118,8 +125,7 @@ export default class Opportunity extends React.Component {
     }); console.log(apply);
 
     console.log(this.state.title);
-
-    return (
+return (
       <Container fluid style={{ height:'100%', padding: '2em' }} textAlign='left'>
         <Container fluid style={{ height:'100%', padding: '2em' }} textAlign='left'>
           <Header as='h1' style={{color:'black'}}>Job Opportunities</Header>

@@ -7,7 +7,7 @@ var insertInteresseQuery =
 "INSERT INTO Interesse (nomeInteressado, email, telefone, idVaga) "+
 "VALUES ('{0}', '{1}', '{2}', {3})";
 
-var getInteressadosQuery = "SELECT * FROM interesse i LEFT JOIN vaga v ON i.idvaga = v.id WHERE v.idEmpresa = {0}";
+var getInteressadosQuery = "SELECT * FROM Interesse i LEFT JOIN Vaga v ON i.idVaga = v.id WHERE v.idEmpresa = {0}";
 
 
 var getAll = function() {

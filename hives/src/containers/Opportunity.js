@@ -71,7 +71,7 @@ export default class Opportunity extends React.Component {
       descricao: this.state.description
     };
 
-    console.log(vacancy);
+    // console.log(vacancy);
 
     if (vacancy.titulo !== '') {
       axios.post('http://localhost:8081/vaga/addVaga', {
@@ -79,15 +79,17 @@ export default class Opportunity extends React.Component {
       })
         .then((response) => {
           console.log(response);
+          this.setState({ vacancy_state: 1 });
         })
         .catch((error) => {
           console.log(error);
+          this.setState({ vacancy_state: -1 });
         });
     }
   }
 
   render() {
-    const { jobs, apply_state } = this.state;
+    const { jobs, apply_state, vacancy_state } = this.state;
     const vagas = jobs.map((j) => {
       const form = <div>
           <Input size='tiny' icon='user' placeholder='Name' style={{ margin: "0.5em" }}
@@ -100,7 +102,7 @@ export default class Opportunity extends React.Component {
            }}>Confirm Apply</Button>
         </div>;
 
-      const confirm = <p style={{ color : "black" }} icon='phone'>Applied!</p> ;
+      const confirm = <p style={{ color : "green" }} icon='phone'>Applied!</p> ;
       const server_error = <p style={{color:"red"}} icon='phone'>Oops! Server error</p>;
 
       return (
@@ -127,35 +129,42 @@ export default class Opportunity extends React.Component {
     }); 
 
     
+    const confirm = <p style={{ color: "green" }}>Opportunity created!</p>;
+    const server_error = <p style={{ color: "red" }}>Oops! Server error</p>;
+    const form =
+      <div class="ui form">
+        <div class="field">
+          <label>Title</label>
+          <input name='title' icon='briefcase' placeholder='Title' style={{ margin: "0.5em" }}
+            onChange={(e) => this.setState({ title: e.target.value })}
+          />
+        </div>
+        <div class="field">
+          <label>Description</label>
+          <textarea onChange={(e) => this.setState({ description: e.target.value })}>
+          </textarea>
+        </div>
+        <Button fluid style={{ margin: "0 0.5em" }}
+          onClick={this.handleCreateOpportunity}>Create</Button>
+      </div>;
+
     return (
-      <Container fluid style={{ height:'100%', padding: '2em' }} textAlign='left'>
-        <Container fluid style={{ height:'100%', padding: '2em' }} textAlign='left'>
-          <Header as='h1' style={{color:'black'}}>Job Opportunities</Header>
+      <Container fluid style={{ height: '100%', padding: '2em' }} textAlign='left'>
+        <Container fluid style={{ height: '100%', padding: '2em' }} textAlign='left'>
+          <Header as='h1' style={{ color: 'black' }}>Job Opportunities</Header>
           <Popup
             trigger={<button class="ui blue right floated labeled icon button">
               <i class="plus icon"></i>
               Create Opportunity
-            </button>}
+            </button>
+            }
             content={
-              <div class="ui form">
-                <div class="field">
-                  <label>Title</label>
-                  <input name ='title'  icon='briefcase' placeholder='Title' style={{margin : "0.5em"}}
-                    onChange={(e) => this.setState({title: e.target.value})}
-                  />
-                </div>
-                <div class="field">
-                  <label>Description</label>
-                  <textarea onChange={(e) => this.setState({description: e.target.value})}>
-                  </textarea>
-                </div>
-                <Button fluid style={{margin : "0 0.5em"}}
-                onClick={this.handleCreateOpportunity}>Create</Button>
-              </div>
+              vacancy_state === 0 ? form : (vacancy_state === 1 ? confirm : server_error)
             }
             size='large'
             on='click'
-            style={{backgroundColor:"white"}}
+            style={{ backgroundColor: "white" }}
+            onClose={() => this.setState({ vacancy_state: 0 })}
           />
 
         </Container>

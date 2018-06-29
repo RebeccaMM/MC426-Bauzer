@@ -7,7 +7,8 @@ export default class Opportunity extends React.Component {
 
   state = {
     jobs : [],
-    apply : false,
+    apply_state : 0,
+    vacancy_state: 0,
     title: '',
     description: '',
     name_candidate:'',
@@ -23,7 +24,6 @@ export default class Opportunity extends React.Component {
         for (let j of this.state.jobs) {
           axios.post('http://localhost:8081/usuario',{ id: j.idEmpresa })
             .then((response) => {
-              j.empresa = response.data[0].nome;
               this.setState({ jobs : this.state.jobs });
             })
             .catch((error) => {
@@ -37,9 +37,8 @@ export default class Opportunity extends React.Component {
   }
 
   handleCreateOpportunityApplication = (idEmpresa, e) => {
-    // console.log(e);
     e.preventDefault();
-    // console.log(idEmpresa);
+
     var interesse = {
       nomeInteressado:this.state.name_candidate,
       email: this.state.email,
@@ -47,21 +46,20 @@ export default class Opportunity extends React.Component {
       idVaga:idEmpresa,
     };
 
-    console.log(interesse);
     if (interesse.email !== '' && interesse.telefone !== '' && interesse.nomeInteressado !== '') {
       axios.post('http://localhost:8081/interesse', {
         interesse:interesse
       })
         .then((response) => {
           console.log(response);
-          this.setState({apply: true});
-          // this.state.apply = true; 
-          // this.forceUpdate();
+          this.setState({apply_state: 1});
         })
         .catch((error) => {
+          this.setState({apply_state: -1});
           console.log(error);
         });
     }
+
   }
 
   handleCreateOpportunity = (e) => {
@@ -89,40 +87,44 @@ export default class Opportunity extends React.Component {
   }
 
   render() {
-    const { jobs, apply } = this.state;
+    const { jobs, apply_state } = this.state;
     const vagas = jobs.map((j) => {
       const form = <div>
-          <Input size='tiny' icon='user' placeholder='Name' style={{ margin: "0.5em" }} />
-          <Input size='tiny' icon='at' placeholder='Email' style={{ margin: "0.5em" }} />
-          <Input size='tiny' icon='phone' placeholder='Phone' style={{ margin: "0.5em" }} />
-        <Button fluid style={{ margin: "0 0.5em" }} onClick={(e) => { this.handleCreateOpportunityApplication.bind(this, j.idEmpresa)(e); 
+          <Input size='tiny' icon='user' placeholder='Name' style={{ margin: "0.5em" }}
+            onChange={(e) => this.setState({name_candidate: e.target.value})}/>
+          <Input size='tiny' icon='at' placeholder='Email' style={{ margin: "0.5em" }}
+            onChange={(e) => this.setState({email: e.target.value})}/>
+          <Input size='tiny' icon='phone' placeholder='Phone' style={{ margin: "0.5em" }}
+            onChange={(e) => this.setState({phone: e.target.value})}/>
+        <Button fluid style={{ margin: "0 0.5em" }} onClick={(e) => { this.handleCreateOpportunityApplication.bind(this, j.idEmpresa)(e);
            }}>Confirm Apply</Button>
         </div>;
 
-      const confirm = <p style={{ color : "white" }}>Applied!</p> ;
+      const confirm = <p style={{ color : "black" }} icon='phone'>Applied!</p> ;
+      const server_error = <p style={{color:"red"}} icon='phone'>Oops! Server error</p>;
 
       return (
         <Card
           key={jobs.indexOf(j)}
           header={j.titulo}
           meta={j.empresa}
-          description={j.descricao}    
-          extra={        
+          description={j.descricao}
+          extra={
             <Popup
               trigger={<Button color='green'>Apply</Button>}
               content={
-                apply === false ? form : confirm
+                apply_state === 0 ? form : (apply_state === 1 ? confirm : server_error)
               }
               size='large'
               on='click'
-              style={{backgroundColor:"green"}}
-              onClose={() => this.setState({ apply : false })}
+              style={{backgroundColor:"white"}}
+              onClose={() => this.setState({ apply_state : 0 })}
             />
 
           }
         />
       )
-    }); console.log(apply);
+    }); console.log(apply_state);
 
     console.log(this.state.title);
 return (
@@ -147,7 +149,7 @@ return (
                   <textarea onChange={(e) => this.setState({description: e.target.value})}>
                   </textarea>
                 </div>
-                <Button fluid style={{margin : "0 0.5em"}} 
+                <Button fluid style={{margin : "0 0.5em"}}
                 onClick={this.handleCreateOpportunity}>Create</Button>
               </div>
             }

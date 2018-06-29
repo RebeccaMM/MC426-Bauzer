@@ -8,7 +8,6 @@ export default class Opportunity extends React.Component {
 
   state = {
     interessados : [],
-    apply : -1,
     title: '',
     description: '',
     name_candidate:'',

@@ -17,29 +17,44 @@ export default class Signup extends Component {
     password: '',
     password_confirmation:'',
     type_of_user:-1,
-    errorMessage: false,
+    passwdsIncorrect: false,
+    serverOffline: false,
+    success: false
   };
 
   handleSubmit = () => {
-    axios.post('http://localhost:8081/usuario/novo', 
-    {
-        nome : this.state.name,
-        login : this.state.username,
-        senha : this.state.password,
-        tipoUsuario :  this.state.type_of_user
-    })
-      .then((response) => {
-        window.location = 'http://localhost:3000/login';
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    if(this.state.name !== '' && this.state.username !== '' && this.state.password !== '' 
+      && this.state.password_confirmation !== ''){
+      if(this.state.password === this.state.password_confirmation){
+        axios.post('http://localhost:8081/usuario/novo', 
+        {
+            nome : this.state.name,
+            login : this.state.username,
+            senha : this.state.password,
+            tipoUsuario :  this.state.type_of_user
+        })
+          .then((response) => {
+            this.setState({ success: true, passwdsIncorrect:false, serverOffline:false})
+            window.location = 'http://localhost:3000/login';
+          })
+          .catch((error) => {
+            console.log(error);
+            if(console.response === undefined){
+              this.setState({ passwdsIncorrect: false, serverOffline:true });
+            }
+          });      
+      }
+      else{
+        this.setState({ passwdsIncorrect:true, serverOffline:false });
+      }
+    }
   };
 
   render() {
 
     const { from } = this.props.location.state || { from: { pathname: "/" } };
-    const { redirectToReferrer,name, username, password, password_confirmation, errorMessage } = this.state;
+    const { redirectToReferrer,name, username, password, password_confirmation, passwdsIncorrect, serverOffline,
+    success } = this.state;
 
     return (
       <div className='login-form'>
@@ -67,6 +82,24 @@ export default class Signup extends Component {
             </Header>
             <Form size='large'>
               <Segment stacked>
+                <Message
+                  hidden={success === false}
+                  positive
+                  header='Success!'
+                  content='You have created an account.'
+                />
+                <Message
+                  hidden={passwdsIncorrect === false}
+                  negative
+                  header='Error!'
+                  content='Password confirmation and password are different.'
+                />
+                <Message
+                  hidden={serverOffline === false}
+                  negative
+                  header='Error!'
+                  content='Server is not available at the moment.'
+                />
                 <Form.Input
                   fluid
                   icon='user'

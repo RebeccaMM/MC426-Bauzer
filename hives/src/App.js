@@ -89,7 +89,8 @@ class Login extends React.Component {
     redirectToReferrer: false,
     username: '',
     password: '',
-    errorMessage: false,
+    loginIncorrect: false,
+    serverOffline: false,
   };
 
   handleSubmit = (e) => {
@@ -104,13 +105,20 @@ class Login extends React.Component {
       this.login();
     })
     .catch((error) => {
-      console.log(error);
-      this.setState({ errorMessage: true });
+      // console.log(error.response.status);
+      if(error.response !== undefined){
+        if(error.response.status === 403){
+          this.setState({ loginIncorrect: true, serverOffline: false });
+        }        
+      }
+      else {
+        this.setState({ serverOffline: true, loginIncorrect: false });
+      }
     });
   };
 
   login = () => {
-    this.setState({ errorMessage: false });
+    this.setState({ loginIncorrect: false });
     fakeAuth.authenticate(() => {
       this.setState({ redirectToReferrer: true });
     });
@@ -119,7 +127,7 @@ class Login extends React.Component {
   render() {
 
     const { from } = this.props.location.state || { from: { pathname: "/" } };
-    const { redirectToReferrer, username, password, errorMessage } = this.state;
+    const { redirectToReferrer, username, password, loginIncorrect, serverOffline } = this.state;
 
     if (redirectToReferrer) {
       return <Redirect to={from} />;
@@ -152,10 +160,16 @@ class Login extends React.Component {
             <Form size='large'>
               <Segment stacked>
                 <Message
-                  hidden={ errorMessage === false }
+                  hidden={ loginIncorrect === false }
                   negative
                   header='Error!'
                   content='Incorrect User or Password.'
+                />
+                <Message
+                  hidden={serverOffline === false}
+                  negative
+                  header='Error!'
+                  content='Server is not available at the moment.'
                 />
                 <Form.Input
                   fluid

@@ -124,10 +124,10 @@ export default class Opportunity extends React.Component {
           }
         />
       )
-    }); console.log(apply_state);
+    }); 
 
-    console.log(this.state.title);
-return (
+    
+    return (
       <Container fluid style={{ height:'100%', padding: '2em' }} textAlign='left'>
         <Container fluid style={{ height:'100%', padding: '2em' }} textAlign='left'>
           <Header as='h1' style={{color:'black'}}>Job Opportunities</Header>

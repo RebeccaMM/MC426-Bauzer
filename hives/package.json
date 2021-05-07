@@ -6,7 +6,7 @@
     "axios": "^0.21.1",
     "faker": "^4.1.0",
     "json-fn": "^1.1.1",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "react": "^16.4.1",
     "react-dom": "^16.4.2",
     "react-router-dom": "^4.3.1",
